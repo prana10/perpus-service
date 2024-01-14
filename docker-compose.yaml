@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: perpus-db
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    env_file:
+      - .env
+    networks:
+      - perpus-networks
+    
+  admin:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 3030:8080
+    networks:
+      - perpus-networks
+
+networks:
+  perpus-networks:
+    driver: bridge
+
+
+
+    
